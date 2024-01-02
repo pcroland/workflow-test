@@ -23,6 +23,10 @@ jobs:
           echo "C:\pywin7\python.3.12.1\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           python --version
 
+      - name: Check python version
+        run: |
+          python --version
+
       - name: Set up libraries
         run: |
           python -m pip install wheel poetry
