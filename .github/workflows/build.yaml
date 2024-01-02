@@ -21,6 +21,7 @@ jobs:
           mkdir "C:\pywin7"
           nuget install python -Source $(Get-Location) -OutputDirectory "C:\pywin7\"
           echo "PY_PATH=C:\pywin7\python.3.12.1\tools\python" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo ${{ env.PY_PATH }}
           ${{ env.PY_PATH }} --version
 
       - name: Set up libraries
