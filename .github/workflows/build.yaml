@@ -1,7 +1,7 @@
 name: Build and publish
 
 env:
-  RELEASE_VERSION:
+  PY_PATH:
 
 on:
   repository_dispatch:
@@ -18,15 +18,16 @@ jobs:
       - name: Set up Python
         run: |
           Invoke-WebRequest -Uri "https://github.com/adang1345/PythonWin7/raw/master/3.12.1/python.3.12.1.nupkg" -OutFile "python.3.12.1.nupkg"
-          mkdir "C:\custom_python"
-          nuget install python -Source $(Get-Location) -OutputDirectory "C:\custom_python\"
-          C:\custom_python\python.3.12.1\tools\python --version
+          mkdir "C:\pywin7"
+          nuget install python -Source $(Get-Location) -OutputDirectory "C:\pywin7\"
+          echo "PY_PATH=C:\pywin7\python.3.12.1\tools\python" | Out-File -FilePath $env:GITHUB_ENV -Append
+          ${{ env.PY_PATH }} --version
 
       - name: Set up libraries
         run: |
-          C:\custom_python\python.3.12.1\tools\python -m pip install wheel poetry
-          C:\custom_python\python.3.12.1\tools\python -m pip install "https://github.com/pcroland/Pyinstaller-Builds/releases/download/PyInstaller/pyinstaller-6.3.0-py3-none-win_amd64.whl"
-          C:\custom_python\python.3.12.1\tools\python -m pip install .
+          ${{ env.PY_PATH }} -m pip install wheel poetry
+          ${{ env.PY_PATH }} -m pip install "https://github.com/pcroland/Pyinstaller-Builds/releases/download/PyInstaller/pyinstaller-6.3.0-py3-none-win_amd64.whl"
+          ${{ env.PY_PATH }} -m pip install .
 
       - name: Fetch version
         run: |
@@ -36,7 +37,7 @@ jobs:
 
       - name: Build
         run: |
-          C:\custom_python\python.3.12.1\tools\python -m pyinstaller -F __main__.py -n deew --icon logo/icon.ico
+          ${{ env.PY_PATH }} -m PyInstaller -F __main__.py -n deew --icon logo/icon.ico
 
       - name: Move dist/deew.exe to deew.exe
         run: mv dist/deew.exe deew.exe
