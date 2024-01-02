@@ -20,7 +20,7 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/adang1345/PythonWin7/raw/master/3.12.1/python.3.12.1.nupkg" -OutFile "python.3.12.1.nupkg"
           mkdir "C:\pywin7"
           nuget install python -Source $(Get-Location) -OutputDirectory "C:\pywin7\"
-          echo "PY_PATH=C:\pywin7\python.3.12.1\tools\python" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo 'PY_PATH="C:\pywin7\python.3.12.1\tools\python"'' | Out-File -FilePath $env:GITHUB_ENV -Append
           echo "testing... ${{ env.PY_PATH }}"
           Invoke-Expression $env:PY_PATH --version
           ${{ env.PY_PATH }} --version
