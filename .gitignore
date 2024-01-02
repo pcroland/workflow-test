@@ -1,0 +1,32 @@
+# python
+__pycache__
+.python-version
+
+# pyinstaller
+build
+release
+dist
+*spec
+*zip
+
+# terminalizer
+term_render.yml
+
+# deew
+temp*
+test*
+*.ac3
+*.ac4
+*.eb3
+*.ec3
+*.thd
+*.wav
+*.w64
+*.mp2
+*.mp3
+*.mp4
+*.flac
+*.dts
+*.pcm
+*.mka
+*.mkv
