@@ -20,26 +20,18 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/adang1345/PythonWin7/raw/master/3.12.1/python.3.12.1.nupkg" -OutFile "python.3.12.1.nupkg"
           mkdir "C:\pywin7"
           nuget install python -Source $(Get-Location) -OutputDirectory "C:\pywin7\"
-          echo 'PY_PATH="C:\pywin7\python.3.12.1\tools\python"' | Out-File -FilePath $env:GITHUB_ENV -Append
-          echo "testing... ${{ env.PY_PATH }}"
-          Invoke-Expression $env:PY_PATH --version
-          ${{ env.PY_PATH }} --version
+          echo "C:\pywin7\python.3.12.1\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          python --version
 
       - name: Set up libraries
         run: |
-          ${{ env.PY_PATH }} -m pip install wheel poetry
-          ${{ env.PY_PATH }} -m pip install "https://github.com/pcroland/Pyinstaller-Builds/releases/download/PyInstaller/pyinstaller-6.3.0-py3-none-win_amd64.whl"
-          ${{ env.PY_PATH }} -m pip install .
-
-      - name: Fetch version
-        run: |
-          $version=$(python -c "print(open('changelog.md', 'r').read().split('\n')[0].split(' ')[2].replace(':', ''))")
-          echo "Version: $version"
-          echo "RELEASE_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+          python -m pip install wheel poetry
+          python -m pip install "https://github.com/pcroland/Pyinstaller-Builds/releases/download/PyInstaller/pyinstaller-6.3.0-py3-none-win_amd64.whl"
+          python -m pip install .
 
       - name: Build
         run: |
-          ${{ env.PY_PATH }} -m PyInstaller -F __main__.py -n deew --icon logo/icon.ico
+          python -m PyInstaller -F __main__.py -n deew --icon logo/icon.ico
 
       - name: Move dist/deew.exe to deew.exe
         run: mv dist/deew.exe deew.exe
